@@ -5,23 +5,25 @@ This fork is customized to remove some other mods from the original creator (htt
 
 This docker image comprises of tools I use, I saw no reason to install the entire Kali system on a docker if I only use a few tools for HackTheBox and CTFs. Hope this is as useful to others as it is to me! That's the point of GitHub and the internet, to share!
 
+NOTE: I removed burpsuite and did not install other GUI apps because getting GUI apps running in docker is not very fun automated, aka I couldn't get it to work so no GUI apps for now.
+
 Integrated with docker-compose and standalone builds
 
-Be patient, this will install all Kali tools (just for the first install, at image generation time). Final image size `~10GB`.
+Be patient, this will install all Kali tools (just for the first install, at image generation time). Final image size `~8.5GB`.
 
 ## Tools
 
 - `kali-linux-top10` 
-  - aircrack-ng
-  - burpsuite
-  - crackmapexec
+  - aircrack-ng (removed, I don't think this necessary to use on HTB machines so I removed it)
+  - burpsuite (removed, see NOTE above)
+  - crackmapexec (removed, python kept giving me errors about not finding the imports or something)
   - hydra
   - john
   - metasploit-framework
   - nmap
   - responder
   - sqlmap
-  - wireshark
+  - wireshark (replaced with `tshark` to use in CLI, see NOTE above)
 - Info Gathering / Vuln Assessment
   - enum4linux
   - dnsmap
@@ -29,7 +31,6 @@ Be patient, this will install all Kali tools (just for the first install, at ima
   - nbtscan
   - ncat
   - smbmap
-  - smtp-user-enum
 - [SecLists](https://github.com/danielmiessler/SecLists) at `/usr/share/seclists`
 - w3af (dropped out of Kali repos)
 - Stego tools
@@ -50,12 +51,14 @@ Be patient, this will install all Kali tools (just for the first install, at ima
   - zstd
   - ltrace, strace
   - vim, less, colordiff, colortail
-  - strace ltrace
-  - unzip, unrar
-  - python3-setuptools python3-pip
-  - bash-completion
-  - nodejs, npm and yarn
-  - openssh, binutils, file
+  - unzip
+  - python3-setuptools python3-pip python
+  - openvpn, binutils, file
+- Custom dotfiles
+  - .zshrc / .bashrc
+  - .vimrc
+  - .profile
+  - .gdbinit
 
   
 ## Usage
@@ -63,6 +66,7 @@ Be patient, this will install all Kali tools (just for the first install, at ima
 Just launch the container using our simple bash compose handler:
 
 ```
+docker cp User.ovpn <CONTAINER-ID>:/root &&\
 bash run.sh
 ```
 
