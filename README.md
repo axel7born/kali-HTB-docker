@@ -41,6 +41,7 @@ Be patient, this will install all Kali tools (just for the first install, at ima
   - radare2
   - gdb-peda
   - valgrind
+  - file
 - base packages
   - wget, curl, telnet, git, iputils-tracepath, net-tools
   - build-essentials
@@ -54,7 +55,7 @@ Be patient, this will install all Kali tools (just for the first install, at ima
   - python3-setuptools python3-pip
   - bash-completion
   - nodejs, npm and yarn
-  - openssh, git
+  - openssh, binutils, file
 
   
 ## Usage
