@@ -47,7 +47,7 @@ Be patient, this will install all Kali tools (just for the first install, at ima
   - wget, curl, telnet, git, iputils-tracepath, net-tools
   - build-essentials
   - tmux, tmate
-  - xterm, zsh
+  - zsh (with oh-my-zsh)
   - zstd
   - ltrace, strace
   - vim, less, colordiff, colortail
@@ -55,10 +55,8 @@ Be patient, this will install all Kali tools (just for the first install, at ima
   - python3-setuptools python3-pip python
   - openvpn, binutils, file
 - Custom dotfiles
-  - .zshrc / .bashrc
+  - .zshrc
   - .vimrc
-  - .profile
-  - .gdbinit
 
   
 ## Usage
@@ -66,8 +64,14 @@ Be patient, this will install all Kali tools (just for the first install, at ima
 Just launch the container using our simple bash compose handler:
 
 ```
-docker cp User.ovpn <CONTAINER-ID>:/root &&\
 bash run.sh
+```
+
+In a separate terminal, you will need to use `docker cp` to move your `User.ovpn` from HackTheBox onto the docker image, as well as any files you want. See below:
+```
+docker cp <FILE/SOURCE> <DEST>
+OR
+docker cp user.ovpn <CONTAINER-ID>:/root/asd/fds/asd
 ```
 
 This will prepare a temporal container (will be auto-destroyed at the end) with the latest available version of Kali
