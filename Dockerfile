@@ -1,4 +1,4 @@
-FROM kalilinux/kali-linux-docker:latest
+FROM kalilinux/kali:latest
 
 MAINTAINER Xavi Torelló <info@xaviertorello.cat>
 
@@ -9,14 +9,9 @@ ENV TERM xterm-256color
 RUN rm -fR /var/lib/apt/ && \
     apt-get clean && \
     apt-get update -y && \
-    apt-get install -y software-properties-common kali-linux-top10 --fix-missing && \
+    apt-get install -y software-properties-common kali-linux-headless --fix-missing && \
     echo 'VERSION_CODENAME=kali-rolling' >> /etc/os-release
     
-# Remove `aircrack-ng` && `burpsuite` && `crackmapexec` && `wireshark` (replaced with `tshark`)
-RUN apt-get remove -y aircrack-ng
-RUN apt-get remove -y burpsuite
-RUN apt-get remove -y crackmapexec
-RUN apt-get remove -y wireshark
 # Install `tshark`
 RUN apt-get install tshark
 
@@ -30,22 +25,22 @@ RUN apt-get install -y steghide binwalk xxd file binutils openvpn locate
 RUN apt-get install -y enum4linux dnsmap masscan nbtscan ncat smbmap
 
 # Install Reversing Tools
-RUN apt-get install -y radare2 gdb valgrind
+#RUN apt-get install -y radare2 gdb valgrind
 
 # Setup GDB-Peda, from (https://github.com/longld/peda installation section)
-RUN git clone https://github.com/longld/peda.git ~/peda && \
-    echo "source ~/peda/peda.py" >> ~/.gdbinit && \
-    echo "DONE! debug your program with gdb and enjoy"
+#RUN git clone https://github.com/longld/peda.git ~/peda && \
+#    echo "source ~/peda/peda.py" >> ~/.gdbinit && \
+#3    echo "DONE! debug your program with gdb and enjoy"
 
 # secLists!
-RUN git clone https://github.com/danielmiessler/SecLists /usr/share/seclists
+#RUN git clone https://github.com/danielmiessler/SecLists /usr/share/seclists
 
 # w3af
-RUN git clone https://github.com/andresriancho/w3af.git /opt/w3af && \
-    apt-get install -y libssl-dev libxml2-dev libxslt1-dev zlib1g-dev python-dev python-pybloomfiltermmap ; \
-    /opt/w3af/w3af_console ; \
-    bash /tmp/w3af_dependency_install.sh ; \
-    echo 'export PATH=/opt/w3af:$PATH' >> /etc/profile
+#RUN git clone https://github.com/andresriancho/w3af.git /opt/w3af && \
+#    apt-get install -y libssl-dev libxml2-dev libxslt1-dev zlib1g-dev python-dev python-pybloomfiltermmap ; \
+#    /opt/w3af/w3af_console ; \
+#    bash /tmp/w3af_dependency_install.sh ; \
+#    echo 'export PATH=/opt/w3af:$PATH' >> /etc/profile
     
 # Install oh-my-zsh && some fun things for startup
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -94,9 +89,10 @@ RUN echo "alias cd....='cd ../..'" >> ~/.zshrc
 RUN echo "alias fcl='fortune | cowsay | lolcat'" >> ~/.zshrc
 RUN echo "alias pip='pip3'" >> ~/.zshrc
 RUN echo "alias docker='sudo docker'" >> ~/.zshrc
-
-RUN PATH="$PATH:/usr/games:/opt/w3af"
+RUN echo "export PATH=$PATH:/usr/games" >> ~/.zshrc
+#RUN PATH="$PATH:/usr/games:/opt/w3af"
     
+RUN export PATH="$PATH:/usr/games"
 # Update DB and clean'up!
 RUN updatedb && \
     apt-get autoremove -y && \
